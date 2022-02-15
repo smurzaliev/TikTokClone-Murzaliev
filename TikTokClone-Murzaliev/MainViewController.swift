@@ -15,13 +15,15 @@ class MainViewController: UIViewController {
     private lazy var mainTableView: UITableView = {
         let view = UITableView()
         view.backgroundColor = .brown
-//        view.showsVerticalScrollIndicator = false
-//        view.isPagingEnabled = true
+        view.showsVerticalScrollIndicator = false
+        view.isPagingEnabled = true
         
         return view
     }()
     
     private lazy var bottomBar = UIStackView()
+    
+    //MARK: - Настройка модели экрана
     
     private lazy var videos: [CellModel] = [
         CellModel(image: "screen0"), CellModel(image: "screen1"), CellModel(image: "screen2"), CellModel(image: "screen3"), CellModel(image: "screen0"), CellModel(image: "screen1"), CellModel(image: "screen2"), CellModel(image: "screen3"), CellModel(image: "screen0"), CellModel(image: "screen1"), CellModel(image: "screen2"), CellModel(image: "screen3")
@@ -31,7 +33,6 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         mainTableView.delegate = self
         mainTableView.dataSource = self
-        mainTableView.register(MainTableViewCell.self, forCellReuseIdentifier: "MainTableViewCell")
         
         setViews()
     }
@@ -46,7 +47,7 @@ class MainViewController: UIViewController {
         
         layoutScreen.addSubview(mainTableView)
         mainTableView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.left.right.equalToSuperview()
             make.bottom.equalToSuperview().offset(-80)
         }
         
@@ -98,13 +99,15 @@ class MainViewController: UIViewController {
 
 }
 
+//MARK: - Делегаты UITableView
+
 extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return videos.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = mainTableView.dequeueReusableCell(withIdentifier: "MainTableViewCell") as! MainTableViewCell
+        let cell = MainTableViewCell()
         let model = videos[indexPath.row]
               
         cell.fill(model: model)
@@ -113,7 +116,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return mainTableView.frame.height
+        return UIScreen.main.bounds.height - 80
     }
     
     
