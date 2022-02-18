@@ -17,12 +17,42 @@ class MainViewController: UIViewController {
         view.backgroundColor = .brown
         view.showsVerticalScrollIndicator = false
         view.isPagingEnabled = true
-        
+        view.delegate = self
+        view.dataSource = self
         return view
     }()
-    
+    let bottomButtonHome: UIButton = {
+        let view = UIButton(type: .system)
+        let largeConfig = UIImage.SymbolConfiguration(pointSize: 24, weight: .semibold, scale: .large)
+        view.setImage(UIImage(systemName: "house.fill", withConfiguration: largeConfig), for: .normal)
+        return view
+    }()
+    let bottomButtonSearch: UIButton = {
+        let view = UIButton(type: .system)
+        let largeConfig = UIImage.SymbolConfiguration(pointSize: 24, weight: .semibold, scale: .large)
+        view.setImage(UIImage(systemName: "magnifyingglass", withConfiguration: largeConfig), for: .normal)
+        return view
+    }()
+    let bottomButtonAdd: UIButton = {
+        let view = UIButton()
+        let largeConfig = UIImage.SymbolConfiguration(pointSize: 24, weight: .semibold, scale: .large)
+        view.setImage(UIImage(systemName: "plus.rectangle", withConfiguration: largeConfig), for: .normal)
+        return view
+    }()
+    let bottomButtonMessage:UIButton = {
+        let view = UIButton(type: .system)
+        let largeConfig = UIImage.SymbolConfiguration(pointSize: 24, weight: .semibold, scale: .large)
+        view.setImage(UIImage(systemName: "message", withConfiguration: largeConfig), for: .normal)
+        return view
+    }()
+    let bottomButtonProfile: UIButton = {
+        let view = UIButton(type: .system)
+        let largeConfig = UIImage.SymbolConfiguration(pointSize: 24, weight: .semibold, scale: .large)
+        view.setImage(UIImage(systemName: "person.crop.circle", withConfiguration: largeConfig), for: .normal)
+        return view
+    }()
     private lazy var bottomBar = UIStackView()
-    
+
     //MARK: - Настройка модели экрана
     
     private lazy var videos: [CellModel] = [
@@ -31,61 +61,29 @@ class MainViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        mainTableView.delegate = self
-        mainTableView.dataSource = self
-        
-        setViews()
+        setSubViews()
     }
 
-    private func setViews() {
+    private func setSubViews() {
         
         view.addSubview(layoutScreen)
         layoutScreen.backgroundColor = .black
         layoutScreen.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        
         layoutScreen.addSubview(mainTableView)
         mainTableView.snp.makeConstraints { make in
             make.top.left.right.equalToSuperview()
             make.bottom.equalToSuperview().offset(-80)
         }
-        
-                
-        
+
         //MARK: - Нижний StackView с кнопками из SF Symbols
-        
-        let largeConfig = UIImage.SymbolConfiguration(pointSize: 24, weight: .semibold, scale: .large)
-        
-        let imageHome = UIImage(systemName: "house.fill", withConfiguration: largeConfig)
-        let imageSearch = UIImage(systemName: "magnifyingglass", withConfiguration: largeConfig)
-        let imageAdd = UIImage(systemName: "plus.rectangle", withConfiguration: largeConfig)
-        let imageMessage = UIImage(systemName: "message", withConfiguration: largeConfig)
-        let imageProfile = UIImage(systemName: "person.crop.circle", withConfiguration: largeConfig)
-        
-        let bottomButtonHome = UIButton(type: .system)
-        bottomButtonHome.setImage(imageHome, for: .normal)
-        
-        let bottomButtonSearch = UIButton(type: .system)
-        bottomButtonSearch.setImage(imageSearch, for: .normal)
-        
-        let bottomButtonAdd = UIButton(type: .system)
-        bottomButtonAdd.setImage(imageAdd, for: .normal)
-        
-        let bottomButtonMessage = UIButton(type: .system)
-        bottomButtonMessage.setImage(imageMessage, for: .normal)
-        
-        let bottomButtonProfile = UIButton(type: .system)
-        bottomButtonProfile.setImage(imageProfile, for: .normal)
-        
-        
+                        
         bottomBar.addArrangedSubview(bottomButtonHome)
         bottomBar.addArrangedSubview(bottomButtonSearch)
         bottomBar.addArrangedSubview(bottomButtonAdd)
-       
         bottomBar.addArrangedSubview(bottomButtonMessage)
         bottomBar.addArrangedSubview(bottomButtonProfile)
-        
         layoutScreen.addSubview(bottomBar)
         bottomBar.axis = .horizontal
         bottomBar.distribution = .fillEqually
@@ -94,9 +92,7 @@ class MainViewController: UIViewController {
             make.top.equalTo(mainTableView.snp.bottom)
             make.bottom.equalToSuperview().offset(-10)
         }
-    
     }
-
 }
 
 //MARK: - Делегаты UITableView
@@ -114,11 +110,9 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
-
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UIScreen.main.bounds.height - 80
     }
-    
-    
+
 }
 
